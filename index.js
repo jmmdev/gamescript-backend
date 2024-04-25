@@ -17,7 +17,7 @@ const MAX_GAME_COUNT = 20;
 const app = express()
 app.use(cors(
     {
-        origin: ["https://gamescript-ui.vercel.app"],
+        origin: ["https://gamescript-frontend.vercel.app"],
         methods: ["POST", "GET", "OPTIONS"],
         credentials: true
     }
