@@ -39,32 +39,24 @@ app.get("/randomGames", async (req, res) => {
     res.json(games);
 })
 
-app.get("/mostRecentGames", async (req, res) => {
-    const games = await GameModel.find({"screenshots.0": {"$exists": true}, "total_rating_count": {"$gt": 200}}).limit(MAX_GAME_COUNT);
-    res.json(games);
-})
+app.get('/homeData', async(req, res) => {
+    const games = await GameModel.find();
 
-app.get("/userFavorites", async (req, res) => {
-    const games = await GameModel.find({"rating_count": {"$gt": 200}});
-    games.sort((a, b) => {return a.rating - b.rating});
+    const mostRecentFilter = [...games.filter((g) => g.screenshots.length > 0 && g.total_rating_count > 200)];
+    const userFilter = [...games.filter((g) => g.rating_count > 200)];
+    const criticFilter = [...games.filter((g) => g.aggregated_rating_count > 5)];
+    const overallFilter = [...games.filter((g) => g.total_rating_count > 200)];
 
-    res.send(games.slice(0, MAX_GAME_COUNT));
-})
+    userFilter.sort((a, b) => {return a.rating - b.rating});
+    criticFilter.sort((a, b) => {return b.aggregated_rating - a.aggregated_rating});
+    overallFilter.sort((a, b) => {return b.total_rating - a.total_rating});
 
-app.get("/criticFavorites", async (req, res) => {
-    const games = await GameModel.find({"aggregated_rating_count": {"$gt": 5}});
-    games.sort((a, b) => {return b.aggregated_rating - a.aggregated_rating});
-
-    res.send(games.slice(0, MAX_GAME_COUNT));
-})
-
-app.get("/overallFavorites", async (req, res) => {
-    const games = await GameModel.find({"total_rating_count": {"$gt": 200}});
-    games.sort((a, b) => {
-        return b.total_rating - a.total_rating
-    });
-
-    res.send(games.slice(0, MAX_GAME_COUNT));
+    res.json({
+        mostRecent: mostRecentFilter.slice(0, MAX_GAME_COUNT),
+        userFavorites: userFilter.slice(0, MAX_GAME_COUNT),
+        criticFavorites: criticFilter.slice(0, MAX_GAME_COUNT),
+        overallFavorites: overallFilter.slice(0, MAX_GAME_COUNT)
+    })
 })
 
 app.get("/screenshot/:id", async (req, res) => {
