@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
 
 app.get("/randomGames", async (req, res) => {
     const games = await GameModel.aggregate([{$match:{"screenshots.0": {"$exists": true}}}]).sample(20);
-    res.json(games);
+    res.send(games);
 })
 
 app.get('/homeData', async(req, res) => {
@@ -51,7 +51,7 @@ app.get('/homeData', async(req, res) => {
     criticFilter.sort((a, b) => {return b.aggregated_rating - a.aggregated_rating});
     overallFilter.sort((a, b) => {return b.total_rating - a.total_rating});
 
-    res.json({
+    res.send({
         mostRecent: mostRecentFilter.slice(0, MAX_GAME_COUNT),
         userFavorites: userFilter.slice(0, MAX_GAME_COUNT),
         criticFavorites: criticFilter.slice(0, MAX_GAME_COUNT),
