@@ -17,14 +17,14 @@ const MAX_GAME_COUNT = 20;
 const app = express()
 app.use(cors(
     {
-        origin: ["https://gamescript-frontend.vercel.app"],
+        origin: process.env.ORIGIN,
         methods: ["POST", "GET", "OPTIONS"],
         credentials: true
     }
 ));
 app.use(express.json())
 
-mongoose.connect("mongodb+srv://devjosm:Ztg0paFg3SFnc02k@cluster0.6gsx9mv.mongodb.net/gamescript?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect(process.env.MONGODB_SRV)
 
 app.listen(process.env.PORT || port, () => {
     console.log("Server is running")
