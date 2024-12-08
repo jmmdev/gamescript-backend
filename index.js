@@ -10,7 +10,7 @@ const LanguageModel = require('./models/Language')
 const LanguageSupportModel = require('./models/LanguageSupport')
 const ScreenshotModel = require('./models/Screenshot')
 const ThemeModel = require('./models/Theme')
-const CategoryModel = require('/models/Category');
+const CategoryModel = require('./models/Category');
 
 const MAX_PAGE_SIZE = 15; 
 const MAX_GAME_COUNT = 20;
