@@ -90,16 +90,26 @@ app.get("/languagesByGameId/:id", async (req, res) => {
 })
 
 app.get("/categories", async (req, res) => {
-    const categories = await CategoryModel.find()
+    const genres = await GenreModel.find()
+    const themes = await ThemeModel.find()
 
-    for (let [index, c] of categories.entries()) {
-        const games = await GameModel.find({themes: {$all: [c._id]}})
+    for (let [index, g] of genres.entries()) {
+        const games = await GameModel.find({genres: {$all: [g._id]}})
         if (!games.length > 0) {
-            categories.splice(index, 1);
+            genres.splice(index, 1);
         }
     }
 
-    res.send(categories)
+    for (let [index, t] of themes.entries()) {
+        const games = await GameModel.find({genres: {$all: [t._id]}})
+        if (!games.length > 0) {
+            themes.splice(index, 1);
+        }
+    }
+
+    const output = {genres: genres, themes: themes}
+
+    res.send(output)
 })
 
 app.get("/genre/:field", async (req, res) => {
