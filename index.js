@@ -12,7 +12,7 @@ const ScreenshotModel = require('./models/Screenshot')
 const ThemeModel = require('./models/Theme')
 const CategoryModel = require('/models/Category');
 
-const MAX_PAGE_SIZE = 15;
+const MAX_PAGE_SIZE = 15; 
 const MAX_GAME_COUNT = 20;
 
 const app = express()
