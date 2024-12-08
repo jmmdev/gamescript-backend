@@ -10,6 +10,7 @@ const LanguageModel = require('./models/Language')
 const LanguageSupportModel = require('./models/LanguageSupport')
 const ScreenshotModel = require('./models/Screenshot')
 const ThemeModel = require('./models/Theme')
+const CategoryModel = require('/models/Category');
 
 const MAX_PAGE_SIZE = 15;
 const MAX_GAME_COUNT = 20;
@@ -111,6 +112,31 @@ app.get("/themes", async (req, res) => {
     }
 
     res.send(themes)
+})
+
+app.get("/clone", async(req, res) => {
+    const genres = await GenreModel.find()
+    const themes = await ThemeModel.find()
+    const categories = [];
+
+    for (let g of genres) {
+        let category = new CategoryModel();
+        category.name = g.name;
+        category.slug = g.slug;
+        category.description = g.description;
+        categories.push(category);
+    }
+
+    for (let t of themes) {
+        let category = new CategoryModel();
+        category.name = g.name;
+        category.slug = g.slug;
+        category.description = g.description;
+        categories.push(category);
+    }
+
+    await CategoryModel.insertMany(categories);
+    res.send('OK');
 })
 
 app.get("/genre/:field", async (req, res) => {
