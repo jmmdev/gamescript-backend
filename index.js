@@ -130,9 +130,9 @@ app.get("/clone", async(req, res) => {
 
     for (let t of themes) {
         let category = new CategoryModel();
-        category.name = g.name;
-        category.slug = g.slug;
-        category.description = g.description;
+        category.name = t.name;
+        category.slug = t.slug;
+        category.description = t.description;
         categories.push(category);
     }
 
