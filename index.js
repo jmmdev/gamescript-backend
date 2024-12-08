@@ -99,7 +99,7 @@ app.get("/genres", async (req, res) => {
         }
     }
 
-    res.send(genres)
+    res.send(genres) 
 })
 
 app.get("/themes", async (req, res) => {
